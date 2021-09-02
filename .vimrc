@@ -125,15 +125,23 @@ imap  <C-BS> <C-W>
 "cscope avoid warning
 set nocscopeverbose
 
-"colorscheme koehler
-"colorscheme desert
-"colorscheme molokai
+
+" Specific colorscheme settings (must come before setting your colorscheme).
+if !exists('g:gruvbox_contrast_light')
+  let g:gruvbox_contrast_light='hard'
+endif
+
+" Set the color scheme.
 colorscheme gruvbox
 set background=dark
-"let g:colors_name="molokai"
-"
-"if exists("g:molokai_original")
-"    let s:molokai_original = g:molokai_original
-"else
-"    let s:molokai_original = 0
-"endif
+
+" Specific colorscheme settings (must come after setting your colorscheme).
+if (g:colors_name == 'gruvbox')
+  if (&background == 'dark')
+    hi Visual cterm=NONE ctermfg=NONE ctermbg=237 guibg=#3a3a3a
+  else
+    hi Visual cterm=NONE ctermfg=NONE ctermbg=228 guibg=#f2e5bc
+    hi CursorLine cterm=NONE ctermfg=NONE ctermbg=228 guibg=#f2e5bc
+    hi ColorColumn cterm=NONE ctermfg=NONE ctermbg=228 guibg=#f2e5bc
+  endif
+endif
