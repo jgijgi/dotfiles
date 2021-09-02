@@ -11,6 +11,16 @@ set statusline=\ %f%m%r%h%w\ %=%({%{&ff}\|%{(&fenc==\"\"?&enc:&fenc).((exists(\"
 set laststatus=2
 
 call plug#begin('~/.vim/plugged')
+nnoremap <C-p> :Files<Cr>
+" ctrlp
+"Plug 'ctrlpvim/ctrlp.vim'
+"let g:ctrlp_map = '<c-p>'
+"let g:ctrlp_cmd = 'CtrlP'
+"Fzf
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+" nerdtree
+Plug 'preservim/nerdtree'
 " bufExplorer
 Plug 'https://github.com/jlanzarotta/bufexplorer.git'
 " svn commands
