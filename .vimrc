@@ -6,17 +6,24 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+" statusline
+set statusline=\ %f%m%r%h%w\ %=%({%{&ff}\|%{(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\")}%k\|%Y}%)\ %([%l,%v][%p%%]\ %)
+set laststatus=2
+
 call plug#begin('~/.vim/plugged')
-" gruvbox colorscheme
-Plug 'morhetz/gruvbox'
-" molokai colorscheme
-Plug 'tomasr/molokai'
 " bufExplorer
 Plug 'https://github.com/jlanzarotta/bufexplorer.git'
 " svn commands
 Plug 'git://repo.or.cz/vcscommand'
 " cscope
 Plug 'gnattishness/cscope_maps'
+" vim-zoom
+Plug 'dhruvasagar/vim-zoom'
+" molokai colorscheme
+"Plug 'tomasr/molokai'
+" gruvbox colorscheme
+Plug 'morhetz/gruvbox'
+set statusline+=%{zoom#statusline()}
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -123,10 +130,10 @@ set nocscopeverbose
 "colorscheme molokai
 colorscheme gruvbox
 set background=dark
-let g:colors_name="molokai"
-
-if exists("g:molokai_original")
-    let s:molokai_original = g:molokai_original
-else
-    let s:molokai_original = 0
-endif
+"let g:colors_name="molokai"
+"
+"if exists("g:molokai_original")
+"    let s:molokai_original = g:molokai_original
+"else
+"    let s:molokai_original = 0
+"endif
