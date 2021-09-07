@@ -71,7 +71,7 @@ set history=10000
 set wildmode=longest,list
 "To avoid equalized windows when sp ou vs
 set noequalalways
-"tabualtion stuff
+"tabulation stuff
 set softtabstop=4
 set shiftwidth=4
 set expandtab
@@ -92,8 +92,8 @@ nnoremap <C-PageDown> :bn!<CR>
 nnoremap <C-PageUp> :bp!<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"autocmd Filetype cpp set colorcolumn=80
-"autocmd Filetype cpp setlocal expandtab sw=2 sts=2
+autocmd Filetype cpp set colorcolumn=80
+autocmd Filetype cpp setlocal expandtab sw=2 sts=2
 "highlight ExtraWhitespace ctermbg=red guibg=red
 "match ExtraWhitespace /\s\+$/
 
