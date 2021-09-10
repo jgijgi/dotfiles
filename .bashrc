@@ -8,6 +8,8 @@ fi
 export INPUTRC="$HOME/.inputrc"
 export LANG=C
 
+export TERM=xterm-256color
+
 # EDITOR
 export EDITOR=/usr/bin/vim
 
@@ -96,7 +98,7 @@ function tmuxtree() {
 }
 
 # make completion
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile 2>/dev/null | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
 
 #
 export PYTHONSTARTUP=/home/$USER/.pystartup
@@ -107,9 +109,6 @@ export MANPATH=$MANPATH:/usr/share/man
 # path 
 export PATH=$PATH:/usr/local/bin
 
-# for vim colors
-export TERM=screen-256color
-
 #
 [[ -f ~/nsenv/.nsrc.bash ]] && source ~/nsenv/.nsrc.bash
 
@@ -118,3 +117,27 @@ export TERM=screen-256color
 export FZF_DEFAULT_COMMAND='fd --type f --color=never --hidden'
 export FZF_CTRL_T_COMMAND='$FZF_DEFAULT_COMMAND'
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :50 {}'"
+
+# gnome-keyring
+if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
+  # memento to create SVN association with keyring
+  # keyring_tool --create=svn 
+  # keyring_tool --setdef=svn
+  set +x
+  tmux has &> /dev/null
+  if [[ $? -eq 1 ]]; then
+    tmux new-session -d -s ADMIN
+    (dbus-launch --sh-syntax;  /usr/bin/gnome-keyring-daemon) > ~/.ssh.auth
+    echo "Creating .ssh.auth"
+  fi
+  set +x
+  source ~/.ssh.auth
+  # re-attach tmux
+  if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
+    if [[ $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
+      tmux attach
+    fi
+  fi
+  #
+  unset LC_CTYPE
+fi
