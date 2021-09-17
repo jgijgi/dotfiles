@@ -1,4 +1,4 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " retreive automatically plug.vim
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
@@ -38,14 +38,14 @@ Plug 'morhetz/gruvbox'
 set statusline+=%{zoom#statusline()}
 call plug#end()
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ex mode is useless
 nnoremap Q <nop>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set directory=~/tmp,/var/tmp,/tmp
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "shortcuts
 map <F12>  :x <CR>
 map <F11>  :w <CR>
@@ -59,7 +59,7 @@ map <F4>   :s/\([ ]\+\)\([A-Za-z_0-9]\+\)\([^:]\+\):.*$/\1\2\3=> \2,<CR>  :noh <
 map <F5> i  CLOCK_PROC : process (clk, rst_n) <CR>  begin<CR>   if rst_n = '0' then <CR>   elsif rising_edge(clk) then <C
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "line numbering
 set number
 "life is case insensitive
@@ -86,20 +86,20 @@ set autoindent
 set tags=tags,../tags,../../tags,../../../tags,../../../../tags,../../../../../tags
 
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "needed for rxvt
 nmap    <ESC>[5^    <C-PageUp>
 nmap    <ESC>[6^    <C-PageDown>
 nnoremap <C-PageDown> :bn!<CR>
 nnoremap <C-PageUp> :bp!<CR>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd Filetype cpp set colorcolumn=80
 autocmd Filetype cpp setlocal expandtab sw=2 sts=2
 "highlight ExtraWhitespace ctermbg=red guibg=red
 "match ExtraWhitespace /\s\+$/
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("gui_running")
   "for the blinds, increase font size
   set guifont=DejaVu\ Sans\ Mono\ 12  
@@ -107,7 +107,7 @@ if has("gui_running")
   set noeb vb t_vb=
 endif
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "word completion
 "work with ctrl-p and ctrl-n
 "but map it on tabulation
@@ -138,6 +138,7 @@ imap  <C-BS> <C-W>
 set nocscopeverbose
 
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Specific colorscheme settings (must come before setting your colorscheme).
 if !exists('g:gruvbox_contrast_light')
   let g:gruvbox_contrast_light='hard'
@@ -157,3 +158,29 @@ if (g:colors_name == 'gruvbox')
     hi ColorColumn cterm=NONE ctermfg=NONE ctermbg=228 guibg=#f2e5bc
   endif
 endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! Egrep(option, query)
+  " https://misc.flogisoft.com/bash/tip_colors_and_formatting
+  " color could be found at .vim/plugged/gruvbox/colors/gruvbox.vim (palette section)
+  let faded_green = "\033[38;5;100m"
+  let faded_orange = "\033[38;5;130m"
+  let default_color = "\033[0m"
+  let white_color = "\033[0m\011\033[37m"
+  let color = '{printf "' . faded_green . '%s:' . faded_orange . '%s:' . white_color . '%s' . default_color . '\n", $1, $2, $3; }'
+  let opts = {
+  \ 'source':  "grep -nr " . a:option . " " . a:query . " . " . " | awk -F: '" . color . "'",
+  \ 'options': ['--ansi', '--prompt', '> ',
+  \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
+  \             '--color', 'fg:188,fg+:222,bg+:#3a3a3a,hl+:104'],
+  \ 'down': '40%'
+  \ }
+  function! opts.sink(lines) 
+    let data = split(a:lines)
+    let file = split(data[0], ":")
+    execute 'e ' . '+' . file[1] . ' ' . file[0]
+  endfunction
+  call fzf#run(opts)
+endfunction
+
+nnoremap <silent> <Leader>cb :call Egrep('-w', expand('<cword>'))<CR>
