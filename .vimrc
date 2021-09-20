@@ -177,8 +177,7 @@ function! s:grep_handler(lines)
                 \ } , a:lines[0], 'e' )
   let list = map(a:lines[1:], 's:GrepSplitResult(v:val)')
   let first = list[0]
-  execute cmd . ' ' . first.filename
-  "echom cmd . ' +' . first.lnum + ' ' . first.filename
+  execute cmd . ' +' . first.lnum . ' ' . first.filename
 endfunction
 
 
@@ -190,16 +189,8 @@ function! Egrep(option, query)
   let default_color = "\033[0m"
   let white_color = "\033[0m\011\033[37m"
   let color = '{printf "' . faded_green . '%s:' . faded_orange . '%s:' . white_color . '%s' . default_color . '\n", $1, $2, $3; }'
-  let opts = {
-  \ 'source':  "grep -nr " . a:option . " " . a:query . " . " . " | awk -F: '" . color . "'",
-  \ 'options': ['--ansi', '--prompt', '> ',
-  \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
-  \             '--expect=ctrl-t,ctrl-v,ctrl-x',
-  \             '--color', 'fg:188,fg+:222,bg+:#3a3a3a,hl+:104'],
-  \ 'down': '40%'
-  \ }
   call fzf#run({
-  \ 'source':  "grep -nr " . a:option . " " . a:query . " . " . " | awk -F: '" . color . "'",
+  \ 'source':  "grep -nr " . a:option . " " . a:query . " ./ " . " | awk -F: '" . color . "'",
   \ 'sink*':    function('s:grep_handler'),
   \ 'options': ['--ansi', '--prompt', '> ',
   \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
