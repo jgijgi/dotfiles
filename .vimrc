@@ -188,7 +188,7 @@ function! Egrep(option, query)
   let faded_orange = "  -e 's/:/\033[38;5;130m:/1'"
   let white_color = " -e 's/:/\033[0m\033[37m:/2'"
   call fzf#run({
-  \ 'source':  "grep " . a:option . " " . a:query . " ./ " . " | sed " . faded_green . faded_orange . white_color,
+  \ 'source':  "grep -nr " . a:option . " " . a:query . " ./ " . " | sed " . faded_green . faded_orange . white_color,
   \ 'sink*':    function('s:grep_handler'),
   \ 'options': ['--ansi', '--prompt', '> ',
   \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
@@ -198,4 +198,5 @@ function! Egrep(option, query)
   \ })
 endfunction
 
-nnoremap <silent> <Leader>cb :call Egrep('-nrw', expand('<cword>'))<CR>
+nnoremap <silent> <Leader>zz :call Egrep('--incl=*.{hpp,hxx,h,cpp}', expand('<cword>'))<CR>
+nnoremap <silent> <Leader>zv :call Egrep('--incl=*.vhd', expand('<cword>'))<CR>
