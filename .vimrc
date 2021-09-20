@@ -49,7 +49,7 @@ set directory=~/tmp,/var/tmp,/tmp
 "shortcuts
 map <F12>  :x <CR>
 map <F11>  :w <CR>
-map <F2>   :s:^:--: <CR> :noh <CR>
+"map <F2>   :s:^:--: <CR> :noh <CR>
 map <S-F2> :s:^--:: <CR> :noh <CR>
 map <F3>   :s:^: : <CR>  :noh <CR>
 map <S-F3> :s:^ :: <CR>  :noh <CR>
@@ -198,5 +198,5 @@ function! Egrep(option, query)
   \ })
 endfunction
 
-nnoremap <silent> <Leader>zz :call Egrep('--incl=*.{hpp,hxx,h,cpp}', expand('<cword>'))<CR>
-nnoremap <silent> <Leader>zv :call Egrep('--incl=*.vhd', expand('<cword>'))<CR>
+autocmd Filetype cpp nnoremap <silent> <F2> :call Egrep('--incl=*.{hpp,hxx,h,cpp}', expand('<cword>'))<CR>
+autocmd Filetype vhd nnoremap <silent> <F2> :call Egrep('--incl=*.vhd', expand('<cword>'))<CR>
