@@ -180,17 +180,15 @@ function! s:grep_handler(lines)
   execute cmd . ' +' . first.lnum . ' ' . first.filename
 endfunction
 
-
-" pci
+" Egrep
 function! Egrep(option, query)
   " https://misc.flogisoft.com/bash/tip_colors_and_formatting
   " color could be found at .vim/plugged/gruvbox/colors/gruvbox.vim (palette section)
   let faded_green = " -e 's/^/\033[38;5;100m/1'"
   let faded_orange = "  -e 's/:/\033[38;5;130m:/1'"
-  "let faded_blue = "  's/^.*:.*:" . a:query . "/\033[38;5;24m&\033[0m\033[37m/e'"
   let white_color = " -e 's/:/\033[0m\033[37m:/2'"
   call fzf#run({
-  \ 'source':  "grep -nr " . a:option . " " . a:query . " ./ " . " | sed " . faded_green . faded_orange . white_color,
+  \ 'source':  "grep " . a:option . " " . a:query . " ./ " . " | sed " . faded_green . faded_orange . white_color,
   \ 'sink*':    function('s:grep_handler'),
   \ 'options': ['--ansi', '--prompt', '> ',
   \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
@@ -200,4 +198,4 @@ function! Egrep(option, query)
   \ })
 endfunction
 
-nnoremap <silent> <Leader>cb :call Egrep('-w', expand('<cword>'))<CR>
+nnoremap <silent> <Leader>cb :call Egrep('-nrw', expand('<cword>'))<CR>
