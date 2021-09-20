@@ -181,16 +181,16 @@ function! s:grep_handler(lines)
 endfunction
 
 
+" pci
 function! Egrep(option, query)
   " https://misc.flogisoft.com/bash/tip_colors_and_formatting
   " color could be found at .vim/plugged/gruvbox/colors/gruvbox.vim (palette section)
-  let faded_green = "\033[38;5;100m"
-  let faded_orange = "\033[38;5;130m"
-  let default_color = "\033[0m"
-  let white_color = "\033[0m\011\033[37m"
-  let color = '{printf "' . faded_green . '%s:' . faded_orange . '%s:' . white_color . '%s' . default_color . '\n", $1, $2, $3; }'
+  let faded_green = " -e 's/^/\033[38;5;100m/1'"
+  let faded_orange = "  -e 's/:/\033[38;5;130m:/1'"
+  "let faded_blue = "  's/^.*:.*:" . a:query . "/\033[38;5;24m&\033[0m\033[37m/e'"
+  let white_color = " -e 's/:/\033[0m\033[37m:/2'"
   call fzf#run({
-  \ 'source':  "grep -nr " . a:option . " " . a:query . " ./ " . " | awk -F: '" . color . "'",
+  \ 'source':  "grep -nr " . a:option . " " . a:query . " ./ " . " | sed " . faded_green . faded_orange . white_color,
   \ 'sink*':    function('s:grep_handler'),
   \ 'options': ['--ansi', '--prompt', '> ',
   \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
