@@ -160,6 +160,28 @@ if (g:colors_name == 'gruvbox')
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" grep split result
+function! s:GrepSplitResult(line)
+  let parts = split(a:line, ':')
+  return { 'filename': parts[0]
+         \,'lnum': parts[1]
+         \,'text': join(parts[2:], ':')
+         \ }
+endfunction
+
+function! s:grep_handler(lines)
+  if len(a:lines) < 2 | return | endif
+  let cmd = get({ 'ctrl-x': 'split'
+                \,'ctrl-v': 'vertical split'
+                \,'ctrl-t': 'tabe'
+                \ } , a:lines[0], 'e' )
+  let list = map(a:lines[1:], 's:GrepSplitResult(v:val)')
+  let first = list[0]
+  execute cmd . ' ' . first.filename
+  "echom cmd . ' +' . first.lnum + ' ' . first.filename
+endfunction
+
+
 function! Egrep(option, query)
   " https://misc.flogisoft.com/bash/tip_colors_and_formatting
   " color could be found at .vim/plugged/gruvbox/colors/gruvbox.vim (palette section)
@@ -172,15 +194,19 @@ function! Egrep(option, query)
   \ 'source':  "grep -nr " . a:option . " " . a:query . " . " . " | awk -F: '" . color . "'",
   \ 'options': ['--ansi', '--prompt', '> ',
   \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
+  \             '--expect=ctrl-t,ctrl-v,ctrl-x',
   \             '--color', 'fg:188,fg+:222,bg+:#3a3a3a,hl+:104'],
   \ 'down': '40%'
   \ }
-  function! opts.sink(lines) 
-    let data = split(a:lines)
-    let file = split(data[0], ":")
-    execute 'e ' . '+' . file[1] . ' ' . file[0]
-  endfunction
-  call fzf#run(opts)
+  call fzf#run({
+  \ 'source':  "grep -nr " . a:option . " " . a:query . " . " . " | awk -F: '" . color . "'",
+  \ 'sink*':    function('s:grep_handler'),
+  \ 'options': ['--ansi', '--prompt', '> ',
+  \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
+  \             '--expect=ctrl-t,ctrl-v,ctrl-x',
+  \             '--color', 'fg:188,fg+:222,bg+:#3a3a3a,hl+:104'],
+  \ 'down': '40%'
+  \ })
 endfunction
 
 nnoremap <silent> <Leader>cb :call Egrep('-w', expand('<cword>'))<CR>
