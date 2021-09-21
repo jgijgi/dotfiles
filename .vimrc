@@ -184,10 +184,7 @@ endfunction
 function! Egrep(option, query)
   " https://misc.flogisoft.com/bash/tip_colors_and_formatting
   " color could be found at .vim/plugged/gruvbox/colors/gruvbox.vim (palette section)
-  let faded_green = " -e 's/^/\033[38;5;100m/1'"
-  let faded_orange = "  -e 's/:/\033[38;5;130m:/1'"
-  let white_color = " -e 's/:/\033[0m\033[37m:/2'"
-  let cmd_to_run = "grep -nr --color=always " . a:option . " " . a:query . " ./ "
+  let cmd_to_run = "GREP_COLORS='ms=38;5;24:mc=01;31:sl=:cx=:fn=38;5;100:ln=38;5;88:bn=32:se=38;5;37' grep -nr --color=always " . a:option . " " . a:query . " ./ "
   call fzf#run({
   \ 'source':  cmd_to_run,
   \ 'sink*':    function('s:grep_handler'),
