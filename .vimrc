@@ -196,5 +196,5 @@ function! Egrep(option, query)
   \ })
 endfunction
 
-autocmd Filetype cpp nnoremap <silent> <F2> :call Egrep('--incl=*.{hpp,hxx,h,cpp}', expand('<cword>'))<CR>
-autocmd Filetype vhd nnoremap <silent> <F2> :call Egrep('--incl=*.vhd', expand('<cword>'))<CR>
+autocmd Filetype cpp  nnoremap <silent> <F2> :call Egrep('--incl=*.{hpp,hxx,h,cpp}', expand('<cword>'))<CR>
+autocmd Filetype vhdl nnoremap <silent> <F2> :call Egrep('--incl=*.vhd', expand('<cword>'))<CR>
