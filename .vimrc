@@ -12,10 +12,12 @@ set laststatus=2
 
 call plug#begin('~/.vim/plugged')
 nnoremap <C-p> :Files<Cr>
-" ctrlp
-"Plug 'ctrlpvim/ctrlp.vim'
-"let g:ctrlp_map = '<c-p>'
-"let g:ctrlp_cmd = 'CtrlP'
+" easy align
+Plug 'junegunn/vim-easy-align'
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 " shift-insert
 Plug 'ConradIrwin/vim-bracketed-paste'
 "Fzf
@@ -92,12 +94,6 @@ nmap    <ESC>[5^    <C-PageUp>
 nmap    <ESC>[6^    <C-PageDown>
 nnoremap <C-PageDown> :bn!<CR>
 nnoremap <C-PageUp> :bp!<CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd Filetype cpp set colorcolumn=80
-autocmd Filetype cpp setlocal expandtab sw=2 sts=2
-"highlight ExtraWhitespace ctermbg=red guibg=red
-"match ExtraWhitespace /\s\+$/
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("gui_running")
@@ -196,5 +192,22 @@ function! Egrep(option, query)
   \ })
 endfunction
 
-autocmd Filetype cpp  nnoremap <silent> <F2> :call Egrep('--incl=*.{hpp,hxx,h,cpp}', expand('<cword>'))<CR>
+function! EgrepCustom()
+  call inputsave()
+  let query = input('Searching for: ')
+  call inputrestore()
+  if query != ""
+    call Egrep('', query)
+  else
+    call Egrep('', expand('<cword>'))
+  endif
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <silent> <F2> :call EgrepCustom()<CR>
+
+autocmd Filetype cpp nnoremap <silent> <F2> :call Egrep('--incl=*.{hpp,hxx,h,cpp}', expand('<cword>'))<CR>
+autocmd Filetype cpp set colorcolumn=80
+autocmd Filetype cpp setlocal expandtab sw=2 sts=2
+
 autocmd Filetype vhdl nnoremap <silent> <F2> :call Egrep('--incl=*.vhd', expand('<cword>'))<CR>
