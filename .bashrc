@@ -38,63 +38,63 @@ alias rlwrap='rlwrap -c -s 1000000'
 
 # functions
 function nohistory() {
-    unset HISTFILE
+  unset HISTFILE
 }
 
 # ps tree-like
 function pst() {
-    if [[ $# -eq 1 ]] 
-    then
-        ps axfo pid,user,lstart,args | less +/$1
-    else
-        ps axfo pid,user,lstart,args | less 
-    fi
+  if [[ $# -eq 1 ]] 
+  then
+    ps axfo pid,user,lstart,args | less +/$1
+  else
+    ps axfo pid,user,lstart,args | less 
+  fi
 }
 
 function hgr() { 
-    cmd="history | grep $1";
-    first=0;
-    for i in $*
-    do
-        if [[ $first -ne 0 ]]
-        then
-            cmd="$cmd | grep $i";
-        fi
-        first=1
-    done;
-    eval $cmd;
+  cmd="history | grep $1";
+  first=0;
+  for i in $*
+  do
+    if [[ $first -ne 0 ]]
+    then
+      cmd="$cmd | grep $i";
+    fi
+    first=1
+  done;
+  eval $cmd;
  }
 
 function cpold() {
-    cp -rp "${1%%/}" "${1%%/}.old"
+  cp -rp "${1%%/}" "${1%%/}.old"
 }
 
 function cpori() {
-    cp -rp "${1%%/}" "${1%%/}.ori"
+  cp -rp "${1%%/}" "${1%%/}.ori"
 }
 
 function cpdate() {
-    cur_date=`date +%Y%m%d.%H%M%S`
-    for i in $*
-    do
-        cp -rp "${i%%/}" "${i%%/}.${cur_date}"
-    done
+  cur_date=`date +%Y%m%d.%H%M%S`
+  for i in $*
+  do
+    cp -rp "${i%%/}" "${i%%/}.${cur_date}"
+  done
 }
 
 function cdx() {
-    cd `dirname $1`
+  cd `dirname $1`
 }
 
 function tmuxtree() {
-    if [[ ! -z $1 ]]; then
-        arg="+/$1"
-    fi
-    for s in `tmux list-sessions -F '#{session_name}'` ; do
-        echo -e "\ntmux session name: $s\n--------------------";
-        for p in `tmux list-panes -s -F '#{pane_pid}' -t "$s"` ; do
-            pstree -p -a -A $p;
-        done;
-    done | less $arg
+  if [[ ! -z $1 ]]; then
+    arg="+/$1"
+  fi
+  for s in `tmux list-sessions -F '#{session_name}'` ; do
+    echo -e "\ntmux session name: $s\n--------------------";
+    for p in `tmux list-panes -s -F '#{pane_pid}' -t "$s"` ; do
+      pstree -p -a -A $p;
+    done;
+  done | less $arg
 }
 
 # make completion
@@ -126,17 +126,17 @@ if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAM
   set +x
   tmux has &> /dev/null
   if [[ $? -eq 1 ]]; then
-    tmux new-session -d -s ADMIN
-    (dbus-launch --sh-syntax;  /usr/bin/gnome-keyring-daemon) > ~/.ssh.auth
-    echo "Creating .ssh.auth"
+  tmux new-session -d -s ADMIN
+  (dbus-launch --sh-syntax;  /usr/bin/gnome-keyring-daemon) > ~/.ssh.auth
+  echo "Creating .ssh.auth"
   fi
   set +x
   source ~/.ssh.auth
   # re-attach tmux
   if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
-    if [[ $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
-      tmux attach
-    fi
+  if [[ $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
+    tmux attach
+  fi
   fi
   #
   unset LC_CTYPE
