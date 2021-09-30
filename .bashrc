@@ -118,6 +118,39 @@ export FZF_DEFAULT_COMMAND='fd --type f --color=never --hidden'
 export FZF_CTRL_T_COMMAND='$FZF_DEFAULT_COMMAND'
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :50 {}'"
 
+
+# prompt
+function get_job_number() {
+  local j=$(jobs -p | wc -l)
+  if [[ $j -ne 0 ]]; then
+    echo "$j "
+  fi
+}
+
+function myprompt()
+{
+  local WHITE_BOLD="\[\033[001;037m\]"
+  local WHITE="\[\033[000;000m\]"
+  local BRIGHTGREEN="\[\033[001;032m\]"
+  local GREEN="\[\033[000;032m\]"
+  local CYAN="\[\033[000;036m\]"
+  local RED="\[\033[001;031m\]"
+  local YELLOW="\[\033[0;33m\]"
+
+  if [[ $HOSTNAME == "boole.ns42.fr" ]]; then
+    PS1="${WHITE_BOLD}[${RED}\u@\h ${BRIGHTGREEN}\$(get_branch_name)${CYAN}\W${WHITE_BOLD}]${WHITE}$ "
+  elif [[ $HOSTNAME == "pearl.ns42.fr" ]]; then
+    PS1="${WHITE_BOLD}[${CYAN}\u@\h ${BRIGHTGREEN}\$(get_branch_name)${RED}\W${YELLOW}${WHITE_BOLD}]${WHITE}$ ${RED}\$(get_job_number)${WHITE}"
+  else
+    PS1="${WHITE_BOLD}[${BRIGHTGREEN}\u@\h ${CYAN}\$(get_branch_name)${RED}\W${WHITE_BOLD}]${WHITE} > "
+  fi
+  export PS1
+}
+
+if [ ! -f /.dockerenv ]; then
+  myprompt
+fi
+
 # gnome-keyring
 if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
   # memento to create SVN association with keyring
