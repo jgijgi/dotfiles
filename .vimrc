@@ -68,6 +68,7 @@ set number
 set ignorecase
 "we want to search fast
 set incsearch
+set hlsearch
 "nowrap
 set nowrap
 "completion and history
