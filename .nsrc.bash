@@ -213,7 +213,7 @@ export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/opt/gcc-4.8.2/lib64:$LD_LIBRARY_PATH
 
 # lisp
-export PATH=/home/$USER/bin/:/home/$USER/work/lisp/bin/:$PATH
+export PATH=/home/$USER/work/lisp/bin/:$PATH
 
 # license
 export LM_LICENSE_FILE=1800@license0-$USER:1800@license1-$USER

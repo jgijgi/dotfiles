@@ -17,6 +17,9 @@ export EDITOR=/usr/bin/vim
 export HISTSIZE=800000
 export HISTFILESIZE=100000000
 
+# path
+export PATH=/home/$USER/bin/:$PATH
+
 # common aliases
 alias rm='rm -i'
 alias scp='scp -rp'
