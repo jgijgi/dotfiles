@@ -11,3 +11,5 @@ done
 if [[ -d ~/.fzf/shell ]]; then
     ln -is ${BASEDIR}/fzf.key-bindings.bash ~/.fzf/shell/key-bindings.bash
 fi
+
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
