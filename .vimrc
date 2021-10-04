@@ -69,6 +69,8 @@ set ignorecase
 "we want to search fast
 set incsearch
 set hlsearch
+"highlight current line
+set cursorline
 "nowrap
 set nowrap
 "completion and history
