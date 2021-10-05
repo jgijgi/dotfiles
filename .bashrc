@@ -1,7 +1,7 @@
 # .bashrc
 # Source global definitions
 if [ -f /etc/bashrc ]; then
- . /etc/bashrc
+  . /etc/bashrc
 fi
 
 # Prompt
@@ -46,27 +46,24 @@ function nohistory() {
 
 # ps tree-like
 function pst() {
-  if [[ $# -eq 1 ]] 
-  then
+  if [[ $# -eq 1 ]]; then
     ps axfo pid,user,lstart,args | less +/$1
   else
-    ps axfo pid,user,lstart,args | less 
+    ps axfo pid,user,lstart,args | less
   fi
 }
 
-function hgr() { 
-  cmd="history | grep $1";
-  first=0;
-  for i in $*
-  do
-    if [[ $first -ne 0 ]]
-    then
-      cmd="$cmd | grep $i";
+function hgr() {
+  cmd="history | grep $1"
+  first=0
+  for i in $*; do
+    if [[ $first -ne 0 ]]; then
+      cmd="$cmd | grep $i"
     fi
     first=1
-  done;
-  eval $cmd;
- }
+  done
+  eval $cmd
+}
 
 function cpold() {
   cp -rp "${1%%/}" "${1%%/}.old"
@@ -77,26 +74,25 @@ function cpori() {
 }
 
 function cpdate() {
-  cur_date=`date +%Y%m%d.%H%M%S`
-  for i in $*
-  do
+  cur_date=$(date +%Y%m%d.%H%M%S)
+  for i in $*; do
     cp -rp "${i%%/}" "${i%%/}.${cur_date}"
   done
 }
 
 function cdx() {
-  cd `dirname $1`
+  cd $(dirname $1)
 }
 
 function tmuxtree() {
   if [[ ! -z $1 ]]; then
     arg="+/$1"
   fi
-  for s in `tmux list-sessions -F '#{session_name}'` ; do
-    echo -e "\ntmux session name: $s\n--------------------";
-    for p in `tmux list-panes -s -F '#{pane_pid}' -t "$s"` ; do
-      pstree -p -a -A $p;
-    done;
+  for s in $(tmux list-sessions -F '#{session_name}'); do
+    echo -e "\ntmux session name: $s\n--------------------"
+    for p in $(tmux list-panes -s -F '#{pane_pid}' -t "$s"); do
+      pstree -p -a -A $p
+    done
   done | less $arg
 }
 
@@ -109,11 +105,11 @@ export PYTHONSTARTUP=/home/$USER/.pystartup
 # man
 export MANPATH=$MANPATH:/usr/share/man
 
-# path 
+# path
 export PATH=$PATH:/usr/local/bin
 
 #
-function prompt_extra() { 
+function prompt_extra() {
   :
 }
 [[ -f ~/nsenv/.nsrc.bash ]] && source ~/nsenv/.nsrc.bash
@@ -124,7 +120,6 @@ export FZF_DEFAULT_COMMAND='fd --type f --color=never --hidden'
 export FZF_CTRL_T_COMMAND='$FZF_DEFAULT_COMMAND'
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :50 {}'"
 
-
 # prompt
 function get_job_number() {
   local j=$(jobs -p | wc -l)
@@ -133,8 +128,7 @@ function get_job_number() {
   fi
 }
 
-function myprompt()
-{
+function myprompt() {
   local WHITE_BOLD="\[\033[001;037m\]"
   local WHITE="\[\033[000;000m\]"
   local BRIGHTGREEN="\[\033[001;032m\]"
@@ -160,13 +154,16 @@ fi
 # gnome-keyring
 if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
   # memento to create SVN association with keyring
-  # keyring_tool --create=svn 
+  # keyring_tool --create=svn
   # keyring_tool --setdef=svn
   set +x
-  tmux has &> /dev/null
+  tmux has &>/dev/null
   if [[ $? -eq 1 ]]; then
     tmux new-session -d -s ADMIN
-    (dbus-launch --sh-syntax;  /usr/bin/gnome-keyring-daemon) > ~/.ssh.auth
+    (
+      dbus-launch --sh-syntax
+      /usr/bin/gnome-keyring-daemon
+    ) >~/.ssh.auth
     echo "Creating .ssh.auth"
   fi
   set +x
