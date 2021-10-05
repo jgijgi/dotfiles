@@ -12,32 +12,34 @@ set laststatus=2
 
 call plug#begin('~/.vim/plugged')
 nnoremap <C-p> :Files<Cr>
-" easy align
-Plug 'junegunn/vim-easy-align'
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-" shift-insert
+"""""" shift-insert
 Plug 'ConradIrwin/vim-bracketed-paste'
-"Fzf
+"""""" Fzf
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-" nerdtree
-Plug 'preservim/nerdtree'
-" bufExplorer
+"""""" bufExplorer
 Plug 'https://github.com/jlanzarotta/bufexplorer.git'
-" svn commands
+"""""" svn commands
 Plug 'git://repo.or.cz/vcscommand'
-" cscope
-Plug 'gnattishness/cscope_maps'
-" vim-zoom
+"""""" vim-zoom
 Plug 'dhruvasagar/vim-zoom'
-" molokai colorscheme
-"Plug 'tomasr/molokai'
-" gruvbox colorscheme
-Plug 'morhetz/gruvbox'
 set statusline+=%{zoom#statusline()}
+"""""" gruvbox colorscheme
+Plug 'morhetz/gruvbox'
+"""""" easy align
+"Plug 'junegunn/vim-easy-align'
+"" Start interactive EasyAlign in visual mode (e.g. vipga)
+"xmap ga <Plug>(EasyAlign)
+"" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+"nmap ga <Plug>(EasyAlign)
+"""""" nerdtree
+"Plug 'preservim/nerdtree'
+"""""" molokai colorscheme
+"Plug 'tomasr/molokai'
+"""""" cscope
+"Plug 'gnattishness/cscope_maps'
+""cscope avoid warning
+"set nocscopeverbose
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -53,8 +55,6 @@ map <F12>  :x <CR>
 map <F11>  :w <CR>
 "map <F2>   :s:^:--: <CR> :noh <CR>
 map <S-F2> :s:^--:: <CR> :noh <CR>
-map <F3>   :s:^: : <CR>  :noh <CR>
-map <S-F3> :s:^ :: <CR>  :noh <CR>
 map <F4>   :s/\([ ]\+\)\([A-Za-z_0-9]\+\)\([^:]\+\):.*$/\1\2\3=> \2,<CR>  :noh <CR>
 "map <F4>   :s/\([ ]\+\)\([A-Za-z_0-9]\+\)\([^:]\+\):.*$/\1\2\3=> \2,:g | s:port:port map:g | s:entity:component:g | noh
 "map <F4> :s/[   ]*\([a-z][a-z]*.*\)[    ][      ]*:.*/                 \1 => \1,/^M:s/  *,/,/^M^M
@@ -69,8 +69,6 @@ set ignorecase
 "we want to search fast
 set incsearch
 set hlsearch
-"highlight current line
-set cursorline
 "nowrap
 set nowrap
 "completion and history
@@ -132,9 +130,6 @@ syntax enable
 
 "command-line control-w as in bash
 imap  <C-BS> <C-W>
-
-"cscope avoid warning
-set nocscopeverbose
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -207,7 +202,7 @@ function! EgrepCustom()
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <silent> <F2> :call EgrepCustom()<CR>
+nnoremap <silent> <F3> :call EgrepCustom()<CR>
 
 autocmd Filetype cpp nnoremap <silent> <F2> :call Egrep('--incl=*.{hpp,hxx,h,cpp}', expand('<cword>'))<CR>
 autocmd Filetype cpp set colorcolumn=80
