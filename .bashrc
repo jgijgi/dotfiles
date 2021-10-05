@@ -113,6 +113,9 @@ export MANPATH=$MANPATH:/usr/share/man
 export PATH=$PATH:/usr/local/bin
 
 #
+function prompt_extra() { 
+  :
+}
 [[ -f ~/nsenv/.nsrc.bash ]] && source ~/nsenv/.nsrc.bash
 
 # fzf
@@ -141,11 +144,11 @@ function myprompt()
   local YELLOW="\[\033[0;33m\]"
 
   if [[ $HOSTNAME == "boole.ns42.fr" ]]; then
-    PS1="${WHITE_BOLD}[${RED}\u@\h ${BRIGHTGREEN}\$(get_branch_name)${CYAN}\W${WHITE_BOLD}]${WHITE}$ "
+    PS1="${WHITE_BOLD}[${RED}\u@\h ${BRIGHTGREEN}\$(prompt_extra)${CYAN}\W${WHITE_BOLD}]${WHITE}$ "
   elif [[ $HOSTNAME == "pearl.ns42.fr" ]]; then
-    PS1="${WHITE_BOLD}[${CYAN}\u@\h ${BRIGHTGREEN}\$(get_branch_name)${RED}\W${YELLOW}${WHITE_BOLD}]${WHITE}$ ${RED}\$(get_job_number)${WHITE}"
+    PS1="${WHITE_BOLD}[${CYAN}\u@\h ${BRIGHTGREEN}\$(prompt_extra)${RED}\W${YELLOW}${WHITE_BOLD}]${WHITE}$ ${RED}\$(get_job_number)${WHITE}"
   else
-    PS1="${WHITE_BOLD}[${BRIGHTGREEN}\u@\h ${CYAN}\$(get_branch_name)${RED}\W${WHITE_BOLD}]${WHITE} > "
+    PS1="${WHITE_BOLD}[${BRIGHTGREEN}\u@\h ${CYAN}\$(prompt_extra)${RED}\W${WHITE_BOLD}]${WHITE} > "
   fi
   export PS1
 }
