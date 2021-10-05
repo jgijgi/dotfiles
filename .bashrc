@@ -165,17 +165,17 @@ if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAM
   set +x
   tmux has &> /dev/null
   if [[ $? -eq 1 ]]; then
-  tmux new-session -d -s ADMIN
-  (dbus-launch --sh-syntax;  /usr/bin/gnome-keyring-daemon) > ~/.ssh.auth
-  echo "Creating .ssh.auth"
+    tmux new-session -d -s ADMIN
+    (dbus-launch --sh-syntax;  /usr/bin/gnome-keyring-daemon) > ~/.ssh.auth
+    echo "Creating .ssh.auth"
   fi
   set +x
   source ~/.ssh.auth
   # re-attach tmux
   if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
-  if [[ $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
-    tmux attach
-  fi
+    if [[ $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
+      tmux attach
+    fi
   fi
   #
   unset LC_CTYPE
