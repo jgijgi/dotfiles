@@ -153,6 +153,9 @@ if (g:colors_name == 'gruvbox')
   endif
 endif
 
+" avoid gray/black different colors
+set term=screen-256color
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " grep split result
 function! s:GrepSplitResult(line)
