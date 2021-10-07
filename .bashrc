@@ -177,3 +177,4 @@ if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAM
   #
   unset LC_CTYPE
 fi
+
