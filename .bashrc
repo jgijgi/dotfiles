@@ -140,9 +140,9 @@ function myprompt() {
   if [[ $HOSTNAME == "boole.ns42.fr" ]]; then
     PS1="${WHITE_BOLD}[${RED}\u@\h ${BRIGHTGREEN}\$(prompt_extra)${CYAN}\W${WHITE_BOLD}]${WHITE}$ "
   elif [[ $HOSTNAME == "pearl.ns42.fr" ]]; then
-    PS1="${WHITE_BOLD}[${CYAN}\u@\h ${BRIGHTGREEN}\$(prompt_extra)${RED}\W${YELLOW}${WHITE_BOLD}]${WHITE}$ ${RED}\$(get_job_number)${WHITE}"
-  else
     PS1="${WHITE_BOLD}[${BRIGHTGREEN}\u@\h ${CYAN}\$(prompt_extra)${RED}\W${WHITE_BOLD}]${WHITE} > "
+  else
+    PS1="${WHITE_BOLD}[${CYAN}\u@\h ${BRIGHTGREEN}\$(prompt_extra)${RED}\W${YELLOW}${WHITE_BOLD}]${WHITE}$ ${RED}\$(get_job_number)${WHITE}"
   fi
   export PS1
 }
