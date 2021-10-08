@@ -2,14 +2,12 @@
 
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+[[ -d ~/.tmux/plugins/tpm ]] || git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 # 
 for i in .vimrc .bashrc .inputrc .tmux.conf
 do
-    ln -is ${BASEDIR}/$i ~/$i
+    [[ $i -ef ${BASEDIR}/$i ]] || ln -is ${BASEDIR}/$i ~/$i
 done
 
-if [[ -d ~/.fzf/shell ]]; then
-    ln -is ${BASEDIR}/fzf.key-bindings.bash ~/.fzf/shell/key-bindings.bash
-fi
-
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+[[ -d ~/.fzf/shell ]] && ln -is ${BASEDIR}/fzf.key-bindings.bash ~/.fzf/shell/key-bindings.bash
