@@ -7,7 +7,7 @@ BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 
 for i in .vimrc .bashrc .inputrc .tmux.conf .bash_profile
 do
-    [[ $i -ef ${BASEDIR}/$i ]] || ln -is ${BASEDIR}/$i ~/$i
+    [[ ! $i -ef ${BASEDIR}/$i ]] || ln -is ${BASEDIR}/$i ~/$i
 done
 
 [[ -d ~/.fzf/shell ]] && ln -is ${BASEDIR}/fzf.key-bindings.bash ~/.fzf/shell/key-bindings.bash
