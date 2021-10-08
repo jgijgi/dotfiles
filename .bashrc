@@ -18,7 +18,7 @@ export HISTSIZE=800000
 export HISTFILESIZE=100000000
 
 # path
-export PATH=/home/$USER/bin/:$PATH
+export PATH=/home/$USER/bin/:$PATH:/usr/local/bin
 
 # common aliases
 alias rm='rm -i'
@@ -104,9 +104,6 @@ export PYTHONSTARTUP=/home/$USER/.pystartup
 
 # man
 export MANPATH=$MANPATH:/usr/share/man
-
-# path
-export PATH=$PATH:/usr/local/bin
 
 #
 function prompt_extra() {
