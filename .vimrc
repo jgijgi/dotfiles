@@ -77,8 +77,8 @@ set wildmode=longest,list
 "To avoid equalized windows when sp ou vs
 set noequalalways
 "tabulation stuff
-set softtabstop=4
-set shiftwidth=4
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 "split windows
 set splitright
@@ -212,3 +212,4 @@ autocmd Filetype cpp set colorcolumn=80
 autocmd Filetype cpp setlocal expandtab sw=2 sts=2
 
 autocmd Filetype vhdl nnoremap <silent> <F2> :call Egrep('--incl=*.vhd', expand('<cword>'))<CR>
+autocmd Filetype cpp setlocal expandtab sw=4 sts=4
