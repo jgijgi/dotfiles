@@ -10,4 +10,7 @@ do
     [[ ~/$i -ef ${BASEDIR}/$i ]] || ln -vis ${BASEDIR}/$i ~/$i
 done
 
-[[ -d ~/.fzf/shell ]] && ln -is ${BASEDIR}/fzf.key-bindings.bash ~/.fzf/shell/key-bindings.bash
+if [[ ! -d ~/.fzf ]]; then
+  git clone https://github.com/jgijgi/fzf ~/.fzf
+  ~/.fzf/install --all
+fi
