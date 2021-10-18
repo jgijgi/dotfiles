@@ -153,7 +153,6 @@ if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAM
   # memento to create SVN association with keyring
   # keyring_tool --create=svn
   # keyring_tool --setdef=svn
-  set +x
   tmux has &>/dev/null
   if [[ $? -eq 1 ]]; then
     tmux new-session -d -s ADMIN
@@ -163,10 +162,9 @@ if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAM
     ) >~/.ssh.auth
     echo "Creating .ssh.auth"
   fi
-  set +x
   source ~/.ssh.auth
   # re-attach tmux
-  if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
+  if [[ -t 1 ]] && [[ -z "$TMUX" ]]; then
     if [[ $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
       tmux attach
     fi
