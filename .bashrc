@@ -169,7 +169,7 @@ if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAM
   source ~/.ssh.auth
   # re-attach tmux
   if [[ -t 1 ]] && [[ -z "$TMUX" ]]; then
-    if [[ ! -z $JG_TMUX_ATTACH ]]; then
+    if [[ ! -z $JG_TMUX_ATTACH && $JG_TMUX_ATTACH -eq 1 ]]; then
       tmux attach
     fi
   fi
