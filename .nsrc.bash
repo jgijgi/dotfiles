@@ -158,6 +158,10 @@ complete -o default -F _kdiff kswitch
 # /collabwork/temp
 alias cdt='cd /collabwork/temp/$USER'
 
+function prompt_extra() {
+  get_branch_name
+}
+
 function get_branch_name() {
   local branch=`pwd | egrep "(^$GEN3)|(^$GEN4)" | cut -f 6,6 -d/`
   if [ ! -z $branch ];
