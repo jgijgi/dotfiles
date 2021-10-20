@@ -13,7 +13,7 @@ done
 
 for i in .perso.bash
 do
-  [[ ! -f ~/$i ]] || cp ${BASEDIR}/$i ~/$i
+  [[ -f ~/$i ]] || cp ${BASEDIR}/$i ~/$i
 done
 
 if [[ ! -d ~/.fzf ]]; then
