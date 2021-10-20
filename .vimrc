@@ -212,4 +212,4 @@ autocmd Filetype cpp set colorcolumn=80
 autocmd Filetype cpp setlocal expandtab sw=2 sts=2
 
 autocmd Filetype vhdl nnoremap <silent> <F2> :call Egrep('--incl=*.vhd', expand('<cword>'))<CR>
-autocmd Filetype cpp setlocal expandtab sw=4 sts=4
+autocmd Filetype vhdl setlocal expandtab sw=4 sts=4
