@@ -4,6 +4,9 @@ if [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
 
+# parameters for prompt colors or tmux att
+[[ -f ~/.perso.bash ]] && source ~/.perso.bash
+
 # Prompt
 export INPUTRC="$HOME/.inputrc"
 export LANG=C
@@ -127,20 +130,21 @@ function get_job_number() {
 
 function myprompt() {
   local WHITE_BOLD="\[\033[001;037m\]"
-  local WHITE="\[\033[000;000m\]"
-  local BRIGHTGREEN="\[\033[001;032m\]"
-  local GREEN="\[\033[000;032m\]"
+  local RESET_COLOR="\[\033[000;000m\]"
+  local BOLD_GREEN="\[\033[001;032m\]"
   local CYAN="\[\033[000;036m\]"
-  local RED="\[\033[001;031m\]"
-  local YELLOW="\[\033[0;33m\]"
+  local BOLD_RED="\[\033[001;031m\]"
+  local BOLD_PURPLE="\[\033[001;035m\]"
+  local BOLD_YELLOW="\[\033[001;033m\]"
 
-  if [[ $HOSTNAME == "boole.ns42.fr" ]]; then
-    PS1="${WHITE_BOLD}[${RED}\u@\h ${BRIGHTGREEN}\$(prompt_extra)${CYAN}\W${WHITE_BOLD}]${WHITE}$ "
-  elif [[ $HOSTNAME == "pearl.ns42.fr" ]]; then
-    PS1="${WHITE_BOLD}[${BRIGHTGREEN}\u@\h ${CYAN}\$(prompt_extra)${RED}\W${WHITE_BOLD}]${WHITE} > "
+  if [[ $JG_PROMPT_CONFIG -eq 1 ]]; then
+    COLOR1=${BOLD_PURPLE}; COLOR2=${BOLD_GREEN}; COLOR3=${CYAN}
+  elif [[ $JG_PROMPT_CONFIG -eq 2 ]]; then
+    COLOR1=${BOLD_YELLOW}; COLOR2=${RESET_COLOR}; COLOR3=${BOLD_PURPLE}
   else
-    PS1="${WHITE_BOLD}[${CYAN}\u@\h ${BRIGHTGREEN}\$(prompt_extra)${RED}\W${YELLOW}${WHITE_BOLD}]${WHITE}$ ${RED}\$(get_job_number)${WHITE}"
+    COLOR1=${CYAN}; COLOR2=${BOLD_GREEN}; COLOR3=${BOLD_RED}
   fi
+  PS1="${WHITE_BOLD}[${COLOR1}\u@\h ${COLOR2}\$(prompt_extra)${COLOR3}\W${WHITE_BOLD}]${RESET_COLOR}$ ${BOLD_RED}\$(get_job_number)${RESET_COLOR}"
   export PS1
 }
 
@@ -165,7 +169,7 @@ if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAM
   source ~/.ssh.auth
   # re-attach tmux
   if [[ -t 1 ]] && [[ -z "$TMUX" ]]; then
-    if [[ $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
+    if [[ ! -z $JG_TMUX_ATTACH ]]; then
       tmux attach
     fi
   fi
