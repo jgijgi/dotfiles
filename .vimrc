@@ -208,8 +208,8 @@ endfunction
 nnoremap <silent> <F3> :call EgrepCustom()<CR>
 
 autocmd Filetype cpp nnoremap <silent> <F2> :call Egrep('--incl=*.{hpp,hxx,h,cpp}', expand('<cword>'))<CR>
-autocmd Filetype cpp set colorcolumn=80
-autocmd Filetype cpp setlocal expandtab sw=2 sts=2
+autocmd Filetype cpp set colorcolumn=132
+autocmd Filetype cpp setlocal expandtab sw=4 sts=4
 
 autocmd Filetype vhdl nnoremap <silent> <F2> :call Egrep('--incl=*.vhd', expand('<cword>'))<CR>
 autocmd Filetype vhdl setlocal expandtab sw=4 sts=4
