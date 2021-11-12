@@ -148,25 +148,31 @@ function myprompt() {
   export PS1
 }
 
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/$USER/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/$USER/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/$USER/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/$USER/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
 if [ ! -f /.dockerenv ]; then
   myprompt
 fi
 
-# gnome-keyring
-if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAME == "pearl.ns42.fr" ]]; then
-  # memento to create SVN association with keyring
-  # keyring_tool --create=svn
-  # keyring_tool --setdef=svn
+# tmux management
+if [[ $HOSTNAME == "redvm50" ]]; then
   tmux has &>/dev/null
   if [[ $? -eq 1 ]]; then
     tmux new-session -d -s ADMIN
-    (
-      dbus-launch --sh-syntax
-      /usr/bin/gnome-keyring-daemon
-    ) >~/.ssh.auth
-    echo "Creating .ssh.auth"
   fi
-  source ~/.ssh.auth
   # re-attach tmux
   if [[ -t 1 ]] && [[ -z "$TMUX" ]]; then
     if [[ ! -z $JG_TMUX_ATTACH && $JG_TMUX_ATTACH -eq 1 ]]; then
@@ -176,4 +182,3 @@ if [[ $HOSTNAME == "boole.ns42.fr" || $HOSTNAME == "chomsky.ns42.fr" || $HOSTNAM
   #
   unset LC_CTYPE
 fi
-
