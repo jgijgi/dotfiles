@@ -55,7 +55,7 @@ map <F12>  :x <CR>
 map <F11>  :w <CR>
 "map <F2>   :s:^:--: <CR> :noh <CR>
 map <S-F2> :s:^--:: <CR> :noh <CR>
-map <F4>   :s/\([ ]\+\)\([A-Za-z_0-9]\+\)\([^:]\+\):.*$/\1\2\3=> \2,<CR>  :noh <CR>
+map <F4> :!p4 edit <C-R>=expand("%:p") <CR>
 "map <F4>   :s/\([ ]\+\)\([A-Za-z_0-9]\+\)\([^:]\+\):.*$/\1\2\3=> \2,:g | s:port:port map:g | s:entity:component:g | noh
 "map <F4> :s/[   ]*\([a-z][a-z]*.*\)[    ][      ]*:.*/                 \1 => \1,/^M:s/  *,/,/^M^M
 map <F5> i  CLOCK_PROC : process (clk, rst_n) <CR>  begin<CR>   if rst_n = '0' then <CR>   elsif rising_edge(clk) then <C
@@ -67,6 +67,8 @@ set number
 "life is case insensitive
 set ignorecase
 "we want to search fast
+"allow backspacing over everything in insert mode
+set bs=indent,eol,start
 set incsearch
 set hlsearch
 "nowrap
@@ -160,9 +162,23 @@ set term=screen-256color
 " grep split result
 function! s:GrepSplitResult(line)
   let parts = split(a:line, ':')
+  " is there a line number?
+  let lnum = 0
+  if len(parts) >= 2
+    " check if argument is a number
+    "let isNumber = parts[1] =~ '[^0-9]'
+    "if isNumber
+      let lnum = parts[1]
+    "endif
+  endif  
+  " is there some text?
+  let text = ""
+  if len(parts) >= 3
+    let text = join(parts[2:], ':')
+  endif  
   return { 'filename': parts[0]
-         \,'lnum': parts[1]
-         \,'text': join(parts[2:], ':')
+         \,'lnum': lnum
+         \,'text': text
          \ }
 endfunction
 
@@ -178,10 +194,18 @@ function! s:grep_handler(lines)
 endfunction
 
 " Egrep
-function! Egrep(option, query)
+function! Egrep(query)
+  " hack as bash aliases are not available here
+  if a:query =~ "^ *greps"
+    let tmp = substitute(a:query, "^ *greps", "grep -nr --color=always --incl=*.{hpp,hxx,h,cpp}", "g")
+  elseif a:query =~ "^ *grep "
+    let tmp = substitute(a:query, "^ *grep", "grep -nr --color=always ", "g")
+  else
+    let tmp = a:query
+  end
   " https://misc.flogisoft.com/bash/tip_colors_and_formatting
   " color could be found at .vim/plugged/gruvbox/colors/gruvbox.vim (palette section)
-  let cmd_to_run = "GREP_COLORS='ms=38;5;24:mc=01;31:sl=:cx=:fn=38;5;100:ln=38;5;88:bn=32:se=38;5;37' grep -nr --color=always " . a:option . " " . a:query . " ./ "
+  let cmd_to_run = "GREP_COLORS='ms=38;5;24:mc=01;31:sl=:cx=:fn=38;5;100:ln=38;5;88:bn=32:se=38;5;37' " . tmp
   call fzf#run({
   \ 'source':  cmd_to_run,
   \ 'sink*':    function('s:grep_handler'),
@@ -198,18 +222,24 @@ function! EgrepCustom()
   let query = input('Searching for: ')
   call inputrestore()
   if query != ""
-    call Egrep('', query)
-  else
-    call Egrep('', expand('<cword>'))
+    call Egrep(query)
   endif
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <F3> :call EgrepCustom()<CR>
 
-autocmd Filetype cpp nnoremap <silent> <F2> :call Egrep('--incl=*.{hpp,hxx,h,cpp}', expand('<cword>'))<CR>
+autocmd Filetype cpp nnoremap <silent> <F2> :call Egrep('greps -w ' . expand('<cword>'))<CR>
 autocmd Filetype cpp set colorcolumn=132
 autocmd Filetype cpp setlocal expandtab sw=4 sts=4
 
-autocmd Filetype vhdl nnoremap <silent> <F2> :call Egrep('--incl=*.vhd', expand('<cword>'))<CR>
 autocmd Filetype vhdl setlocal expandtab sw=4 sts=4
+
+" Only do this part when compiled with support for autocommands
+if has("autocmd")
+  " When editing a file, always jump to the last cursor position
+  autocmd BufReadPost *
+  \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+  \   exe "normal! g'\"" |
+  \ endif
+endif
