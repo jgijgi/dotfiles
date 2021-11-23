@@ -138,11 +138,17 @@ function myprompt() {
   local BOLD_YELLOW="\[\033[001;033m\]"
 
   if [[ $JG_PROMPT_CONFIG -eq 1 ]]; then
-    COLOR1=${BOLD_PURPLE}; COLOR2=${BOLD_GREEN}; COLOR3=${CYAN}
+    COLOR1=${BOLD_PURPLE}
+    COLOR2=${BOLD_GREEN}
+    COLOR3=${CYAN}
   elif [[ $JG_PROMPT_CONFIG -eq 2 ]]; then
-    COLOR1=${BOLD_YELLOW}; COLOR2=${RESET_COLOR}; COLOR3=${BOLD_PURPLE}
+    COLOR1=${BOLD_YELLOW}
+    COLOR2=${RESET_COLOR}
+    COLOR3=${BOLD_PURPLE}
   else
-    COLOR1=${CYAN}; COLOR2=${BOLD_GREEN}; COLOR3=${BOLD_RED}
+    COLOR1=${CYAN}
+    COLOR2=${BOLD_GREEN}
+    COLOR3=${BOLD_RED}
   fi
   PS1="${WHITE_BOLD}[${COLOR1}\u@\h ${COLOR2}\$(prompt_extra)${COLOR3}\W${WHITE_BOLD}]${RESET_COLOR}$ ${BOLD_RED}\$(get_job_number)${RESET_COLOR}"
   export PS1
@@ -150,15 +156,16 @@ function myprompt() {
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/$USER/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('~/miniconda3/bin/conda' 'shell.bash' 'hook' 2>/dev/null)"
 if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
+  eval "$__conda_setup"
+  export MANPATH=$MANPATH:~/miniconda3/share/man/
 else
-    if [ -f "/home/$USER/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/$USER/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/$USER/miniconda3/bin:$PATH"
-    fi
+  if [ -f "~/miniconda3/etc/profile.d/conda.sh" ]; then
+    . "~/miniconda3/etc/profile.d/conda.sh"
+  else
+    export PATH="~/miniconda3/bin:$PATH"
+  fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
