@@ -17,6 +17,7 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 """""" Fzf
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 """""" bufExplorer
 Plug 'https://github.com/jlanzarotta/bufexplorer.git'
 """""" svn commands
