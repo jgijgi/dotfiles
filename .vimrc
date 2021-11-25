@@ -199,8 +199,12 @@ function! Egrep(query)
   " hack as bash aliases are not available here
   if a:query =~ "^ *greps"
     let tmp = substitute(a:query, "^ *greps", "grep -nr --color=always --incl=*.{hpp,hxx,h,cpp}", "g")
+  elseif a:query =~ "^ *rgs"
+    let tmp = substitute(a:query, "^ *rgs", "rg -n --color=always -g '*.{hpp,hxx,h,cpp}'", "g")
   elseif a:query =~ "^ *grep "
     let tmp = substitute(a:query, "^ *grep", "grep -nr --color=always ", "g")
+  elseif a:query =~ "^ *rg "
+    let tmp = substitute(a:query, "^ *rg", "rg -n --color=always ", "g")
   else
     let tmp = a:query
   end
@@ -230,7 +234,7 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <F3> :call EgrepCustom()<CR>
 
-autocmd Filetype cpp nnoremap <silent> <F2> :call Egrep('greps -w ' . expand('<cword>'))<CR>
+autocmd Filetype cpp nnoremap <silent> <F2> :call Egrep('rgs -w ' . expand('<cword>'))<CR>
 autocmd Filetype cpp set colorcolumn=132
 autocmd Filetype cpp setlocal expandtab sw=4 sts=4
 
