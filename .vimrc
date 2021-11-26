@@ -190,8 +190,9 @@ function! s:grep_handler(lines)
                 \,'ctrl-t': 'tabe'
                 \ } , a:lines[0], 'e' )
   let list = map(a:lines[1:], 's:GrepSplitResult(v:val)')
-  let first = list[0]
-  execute cmd . ' +' . first.lnum . ' ' . first.filename
+  for item in list
+    execute cmd . ' +' . item.lnum . ' ' . item.filename
+  endfor
 endfunction
 
 " Egrep
