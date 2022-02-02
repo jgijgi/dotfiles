@@ -42,6 +42,29 @@ alias grepv='grep --incl=*.vhd'
 export RLWRAP_HOME=~/.rlwrap
 alias rlwrap='rlwrap -c -s 1000000'
 
+# highlight
+function hl() {
+  color="red"
+  pattern=$1
+  if [[ $# -eq 2 ]]; then
+    color=$1
+    pattern=$2
+  fi
+  declare -A fg_color_map
+  fg_color_map[black]=30
+  fg_color_map[red]=31
+  fg_color_map[green]=32
+  fg_color_map[yellow]=33
+  fg_color_map[blue]=34
+  fg_color_map[magenta]=35
+  fg_color_map[cyan]=36
+
+  fg_c=$(echo -e "\e[1;${fg_color_map[$color]}m")
+  c_rs=$'\e[0m'
+  sed -ru s"/$pattern/$fg_c\0$c_rs/g"
+}
+export -f hl
+
 # functions
 function nohistory() {
   unset HISTFILE
