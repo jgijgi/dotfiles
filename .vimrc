@@ -20,11 +20,17 @@ Plug 'junegunn/fzf.vim'
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 """""" bufExplorer
 Plug 'https://github.com/jlanzarotta/bufexplorer.git'
-"""""" svn commands
+"""""" svn/git commands
 Plug 'git://repo.or.cz/vcscommand'
+"""""" p4 commands
+Plug 'ngemily/vim-vp4'
 """""" vim-zoom
 Plug 'dhruvasagar/vim-zoom'
 set statusline+=%{zoom#statusline()}
+"""""" vim airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+let g:airline_theme='gruvbox'
 """""" gruvbox colorscheme
 Plug 'morhetz/gruvbox'
 """""" easy align
@@ -55,8 +61,8 @@ set directory=~/tmp,/var/tmp,/tmp
 map <F12>  :x <CR>
 map <F11>  :w <CR>
 "map <F2>   :s:^:--: <CR> :noh <CR>
-map <S-F2> :s:^--:: <CR> :noh <CR>
-map <F4> :!p4 edit <C-R>=expand("%:p") <CR>
+"map <S-F2> :s:^--:: <CR> :noh <CR>
+map <F4> :Vp4Edit <CR>
 "map <F4>   :s/\([ ]\+\)\([A-Za-z_0-9]\+\)\([^:]\+\):.*$/\1\2\3=> \2,:g | s:port:port map:g | s:entity:component:g | noh
 "map <F4> :s/[   ]*\([a-z][a-z]*.*\)[    ][      ]*:.*/                 \1 => \1,/^M:s/  *,/,/^M^M
 map <F5> i  CLOCK_PROC : process (clk, rst_n) <CR>  begin<CR>   if rst_n = '0' then <CR>   elsif rising_edge(clk) then <C
@@ -90,6 +96,8 @@ set splitbelow
 set autoindent
 "tags
 set tags=tags,../tags,../../tags,../../../tags,../../../../tags,../../../../../tags
+"env variables can be part of file 
+set isfname+={,}
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -99,10 +107,13 @@ nmap    <ESC>[6^    <C-PageDown>
 nnoremap <C-PageDown> :bn!<CR>
 nnoremap <C-PageUp> :bp!<CR>
 
+map <ESC>[1;5D <C-Left>
+map <ESC>[1;5C <C-Right>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("gui_running")
   "for the blinds, increase font size
-  set guifont=DejaVu\ Sans\ Mono\ 12  
+  set guifont=DejaVu\ Sans\ Mono\ 12
   "disabling bell, we are not deaf
   set noeb vb t_vb=
 endif
@@ -171,12 +182,12 @@ function! s:GrepSplitResult(line)
     "if isNumber
       let lnum = parts[1]
     "endif
-  endif  
+  endif
   " is there some text?
   let text = ""
   if len(parts) >= 3
     let text = join(parts[2:], ':')
-  endif  
+  endif
   return { 'filename': parts[0]
          \,'lnum': lnum
          \,'text': text
@@ -234,11 +245,13 @@ endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <F3> :call EgrepCustom()<CR>
+nnoremap <silent> <S-F2> :call Egrep('rgs -w ' . expand('<cword>'))<CR>
+nnoremap <silent> <F2> :call Egrep('rg -w ' . expand('<cword>'))<CR>
+nnoremap <silent> <F1> :Vp4Diff <CR>
 
-autocmd Filetype cpp nnoremap <silent> <F2> :call Egrep('rgs -w ' . expand('<cword>'))<CR>
+set expandtab sw=4 sts=4
 autocmd Filetype cpp set colorcolumn=132
 autocmd Filetype cpp setlocal expandtab sw=4 sts=4
-
 autocmd Filetype vhdl setlocal expandtab sw=4 sts=4
 
 " Only do this part when compiled with support for autocommands
