@@ -24,9 +24,11 @@ Plug 'https://github.com/jlanzarotta/bufexplorer.git'
 Plug 'git://repo.or.cz/vcscommand'
 """""" p4 commands
 Plug 'ngemily/vim-vp4'
+if v:version > 800
 """""" vim-zoom
 Plug 'dhruvasagar/vim-zoom'
 set statusline+=%{zoom#statusline()}
+endif
 """""" vim airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
