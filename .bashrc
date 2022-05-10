@@ -152,13 +152,13 @@ function get_job_number() {
 }
 
 function myprompt() {
-  local WHITE_BOLD="\033[001;037m"
-  local RESET_COLOR="\033[000;000m"
-  local BOLD_GREEN="\033[001;032m"
-  local CYAN="\033[000;036m"
-  local BOLD_RED="\033[001;031m"
-  local BOLD_PURPLE="\033[001;035m"
-  local BOLD_YELLOW="\033[001;033m"
+  local WHITE_BOLD="\001\033[001;037m\002"
+  local RESET_COLOR="\001\033[000;000m\002"
+  local BOLD_GREEN="\001\033[001;032m\002"
+  local CYAN="\001\033[000;036m\002"
+  local BOLD_RED="\001\033[001;031m\002"
+  local BOLD_PURPLE="\001\033[001;035m\002"
+  local BOLD_YELLOW="\001\033[001;033m\002"
 
   if [[ $JG_PROMPT_CONFIG -eq 1 ]]; then
     COLOR1=${BOLD_PURPLE}
