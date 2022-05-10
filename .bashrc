@@ -152,13 +152,13 @@ function get_job_number() {
 }
 
 function myprompt() {
-  local WHITE_BOLD="\[\033[001;037m\]"
-  local RESET_COLOR="\[\033[000;000m\]"
-  local BOLD_GREEN="\[\033[001;032m\]"
-  local CYAN="\[\033[000;036m\]"
-  local BOLD_RED="\[\033[001;031m\]"
-  local BOLD_PURPLE="\[\033[001;035m\]"
-  local BOLD_YELLOW="\[\033[001;033m\]"
+  local WHITE_BOLD="\033[001;037m"
+  local RESET_COLOR="\033[000;000m"
+  local BOLD_GREEN="\033[001;032m"
+  local CYAN="\033[000;036m"
+  local BOLD_RED="\033[001;031m"
+  local BOLD_PURPLE="\033[001;035m"
+  local BOLD_YELLOW="\033[001;033m"
 
   if [[ $JG_PROMPT_CONFIG -eq 1 ]]; then
     COLOR1=${BOLD_PURPLE}
@@ -173,8 +173,14 @@ function myprompt() {
     COLOR2=${BOLD_GREEN}
     COLOR3=${BOLD_RED}
   fi
-  PS1="${WHITE_BOLD}[${COLOR1}\u@\h ${COLOR2}\$(prompt_extra)${COLOR3}\W${WHITE_BOLD}]${RESET_COLOR}$ ${BOLD_RED}\$(get_job_number)${RESET_COLOR}"
-  export PS1
+
+  if [[ $(type -t custom_prompt) == function ]]; then
+    custom_prompt
+    return
+  else
+    PS1="${WHITE_BOLD}[${COLOR1}\u@\h ${COLOR2}\$(prompt_extra)${COLOR3}\W${WHITE_BOLD}]${RESET_COLOR}$ ${BOLD_RED}\$(get_job_number)${RESET_COLOR}"
+    export PS1
+  fi
 }
 
 # >>> conda initialize >>>
