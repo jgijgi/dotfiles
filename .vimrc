@@ -59,18 +59,6 @@ nnoremap Q <nop>
 set directory=~/tmp,/var/tmp,/tmp
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"shortcuts
-map <F12>  :x <CR>
-map <F11>  :w <CR>
-"map <F2>   :s:^:--: <CR> :noh <CR>
-"map <S-F2> :s:^--:: <CR> :noh <CR>
-map <F4> :Vp4Edit <CR>
-"map <F4>   :s/\([ ]\+\)\([A-Za-z_0-9]\+\)\([^:]\+\):.*$/\1\2\3=> \2,:g | s:port:port map:g | s:entity:component:g | noh
-"map <F4> :s/[   ]*\([a-z][a-z]*.*\)[    ][      ]*:.*/                 \1 => \1,/^M:s/  *,/,/^M^M
-map <F5> i  CLOCK_PROC : process (clk, rst_n) <CR>  begin<CR>   if rst_n = '0' then <CR>   elsif rising_edge(clk) then <C
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "line numbering
 set number
 "life is case insensitive
@@ -172,6 +160,15 @@ endif
 " avoid gray/black different colors
 set term=screen-256color
 
+function! s:DiffWithSaved()
+  let filetype=&ft
+  diffthis
+  vnew | r # | normal! 1Gdd
+  diffthis
+  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+endfunction
+com! DiffSaved call s:DiffWithSaved()
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " grep split result
 function! s:GrepSplitResult(line)
@@ -246,11 +243,6 @@ function! EgrepCustom()
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <silent> <F3> :call EgrepCustom()<CR>
-nnoremap <silent> <S-F2> :call Egrep('rgs -w ' . expand('<cword>'))<CR>
-nnoremap <silent> <F2> :call Egrep('rg -w ' . expand('<cword>'))<CR>
-nnoremap <silent> <F1> :Vp4Diff <CR>
-
 set expandtab sw=4 sts=4
 autocmd Filetype cpp set colorcolumn=132
 autocmd Filetype cpp setlocal expandtab sw=4 sts=4
@@ -264,3 +256,14 @@ if has("autocmd")
   \   exe "normal! g'\"" |
   \ endif
 endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Fn shortcuts
+nnoremap <silent> <F1> :Vp4Diff <CR>
+nnoremap <silent> <F2> :call Egrep('rg -w ' . expand('<cword>'))<CR>
+nnoremap <silent> <F3> :call EgrepCustom()<CR>
+map <F4> :Vp4Edit <CR>
+map <F5> :DiffSaved <CR>
+map <F11>  :w <CR>
+map <F12>  :x <CR>
+
