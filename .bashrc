@@ -131,10 +131,6 @@ export PYTHONSTARTUP=/home/$USER/.pystartup
 # man
 export MANPATH=$MANPATH:/usr/share/man
 
-#
-function prompt_extra() {
-  :
-}
 [[ -f ~/nsenv/.nsrc.bash ]] && source ~/nsenv/.nsrc.bash
 
 # fzf
@@ -162,23 +158,23 @@ function myprompt() {
 
   if [[ $JG_PROMPT_CONFIG -eq 1 ]]; then
     COLOR1=${BOLD_PURPLE}
-    COLOR2=${BOLD_GREEN}
-    COLOR3=${CYAN}
+    COLOR2=${CYAN}
+    COLOR3=${BOLD_GREEN}
   elif [[ $JG_PROMPT_CONFIG -eq 2 ]]; then
     COLOR1=${BOLD_YELLOW}
-    COLOR2=${RESET_COLOR}
-    COLOR3=${BOLD_PURPLE}
+    COLOR2=${BOLD_PURPLE}
+    COLOR3=${CYAN}
   else
     COLOR1=${CYAN}
-    COLOR2=${BOLD_GREEN}
-    COLOR3=${BOLD_RED}
+    COLOR2=${BOLD_RED}
+    COLOR3=${BOLD_GREEN}
   fi
 
   if [[ $(type -t custom_prompt) == function ]]; then
     custom_prompt
     return
   else
-    PS1="${WHITE_BOLD}[${COLOR1}\u@\h ${COLOR2}\$(prompt_extra)${COLOR3}\W${WHITE_BOLD}]${RESET_COLOR}$ ${BOLD_RED}\$(get_job_number)${RESET_COLOR}"
+    PS1="${WHITE_BOLD}[${COLOR1}\u@\h ${COLOR2}\W${WHITE_BOLD}]${RESET_COLOR}$ ${BOLD_RED}\$(get_job_number)${RESET_COLOR}"
     export PS1
   fi
 }
