@@ -35,6 +35,8 @@ Plug 'vim-airline/vim-airline-themes'
 let g:airline_theme='gruvbox'
 """""" gruvbox colorscheme
 Plug 'morhetz/gruvbox'
+""""""
+"Plug 'neoclide/coc.nvim'
 """""" easy align
 "Plug 'junegunn/vim-easy-align'
 "" Start interactive EasyAlign in visual mode (e.g. vipga)
